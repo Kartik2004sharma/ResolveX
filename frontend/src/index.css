@@ -1,19 +1,65 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── shadcn/ui CSS variables ───────────────────────────────────────── */
 @layer base {
-  * { @apply border-surface-200; }
-  
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 243 75% 58%;      /* indigo-500 — matches existing primary */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 243 75% 58%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 243 75% 58%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 243 75% 58%;
+  }
+
+  * { @apply border-border; }
+
   html {
     @apply antialiased;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
   body {
-    @apply bg-surface-50 text-surface-900 font-sans;
+    @apply bg-background text-foreground font-sans;
   }
 
   ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -24,6 +70,7 @@
   ::selection { @apply bg-primary-100 text-primary-900; }
 }
 
+/* ── App component classes ─────────────────────────────────────────── */
 @layer components {
   /* Buttons */
   .btn {
@@ -102,49 +149,56 @@
   .table-base tbody tr { @apply hover:bg-surface-50 transition-colors; }
 
   /* Stat card */
-  .stat-card {
-    @apply card p-5 flex flex-col gap-1;
-  }
+  .stat-card  { @apply card p-5 flex flex-col gap-1; }
   .stat-label { @apply text-xs font-medium text-surface-500 uppercase tracking-wider; }
   .stat-value { @apply text-3xl font-bold text-surface-900 tabular-nums; }
   .stat-sub   { @apply text-xs text-surface-400; }
 
   /* Sidebar nav item */
-  .nav-item {
-    @apply flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium
-           text-surface-600 hover:text-surface-900 hover:bg-surface-100
-           transition-colors duration-150;
-  }
-  .nav-item-active {
-    @apply bg-primary-50 text-primary-700 hover:bg-primary-50 hover:text-primary-700;
-  }
+  .nav-item        { @apply flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-surface-600 hover:text-surface-900 hover:bg-surface-100 transition-colors duration-150; }
+  .nav-item-active { @apply bg-primary-50 text-primary-700 hover:bg-primary-50 hover:text-primary-700; }
 
   /* Timeline dot */
-  .timeline-dot {
-    @apply w-2 h-2 rounded-full bg-primary-500 mt-1.5 flex-shrink-0 ring-4 ring-primary-50;
-  }
+  .timeline-dot { @apply w-2 h-2 rounded-full bg-primary-500 mt-1.5 flex-shrink-0 ring-4 ring-primary-50; }
 
   /* Section header */
-  .section-header {
-    @apply flex items-center justify-between mb-5;
-  }
-  .section-title {
-    @apply text-base font-semibold text-surface-900;
-  }
+  .section-header { @apply flex items-center justify-between mb-5; }
+  .section-title  { @apply text-base font-semibold text-surface-900; }
 
   /* Empty state */
-  .empty-state {
-    @apply flex flex-col items-center justify-center py-16 px-8 text-center;
-  }
-  .empty-state-icon {
-    @apply w-12 h-12 rounded-xl bg-surface-100 flex items-center justify-center mb-4 text-surface-400;
-  }
+  .empty-state      { @apply flex flex-col items-center justify-center py-16 px-8 text-center; }
+  .empty-state-icon { @apply w-12 h-12 rounded-xl bg-surface-100 flex items-center justify-center mb-4 text-surface-400; }
 
   /* Loading skeleton */
-  .skeleton {
-    @apply animate-pulse bg-surface-200 rounded-lg;
-  }
+  .skeleton { @apply animate-pulse bg-surface-200 rounded-lg; }
 
   /* Divider */
   .divider { @apply border-t border-surface-100 my-5; }
+
+  /* ── Positivus landing-page components ── */
+  /* Green highlight pill (wraps a word in the hero heading) */
+  .brand-highlight {
+    @apply inline-block bg-brand-green text-brand-dark rounded-pill px-3 leading-tight;
+  }
+  /* Section label pill */
+  .brand-label {
+    @apply inline-flex items-center gap-1.5 bg-brand-green text-brand-dark text-sm font-medium px-3 py-1 rounded-pill;
+  }
+  /* Positivus-style card variants */
+  .brand-card-dark  { @apply rounded-brand border border-brand-dark bg-brand-dark text-white; }
+  .brand-card-green { @apply rounded-brand border border-brand-dark bg-brand-green text-brand-dark; }
+  .brand-card-light { @apply rounded-brand border border-brand-dark bg-brand-light text-brand-dark; }
+  /* Brand button variants */
+  .brand-btn-dark {
+    @apply inline-flex items-center gap-2 bg-brand-dark text-white font-medium px-6 py-3.5
+           rounded-pill border border-brand-dark hover:bg-brand-dark/90 transition-colors duration-150 text-sm;
+  }
+  .brand-btn-green {
+    @apply inline-flex items-center gap-2 bg-brand-green text-brand-dark font-medium px-6 py-3.5
+           rounded-pill border border-brand-dark hover:bg-brand-green/90 transition-colors duration-150 text-sm;
+  }
+  .brand-btn-outline {
+    @apply inline-flex items-center gap-2 bg-transparent text-brand-dark font-medium px-6 py-3.5
+           rounded-pill border border-brand-dark hover:bg-brand-dark hover:text-white transition-colors duration-150 text-sm;
+  }
 }

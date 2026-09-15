@@ -2,47 +2,47 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import { Shield } from 'lucide-react';
+
+const DEPARTMENTS = [
+  { value: 'ELECTRICAL', label: 'Electrical' },
+  { value: 'PLUMBING',   label: 'Plumbing' },
+  { value: 'HVAC',       label: 'HVAC' },
+  { value: 'IT_SUPPORT', label: 'IT Support' },
+  { value: 'SECURITY',   label: 'Security' },
+  { value: 'GENERAL',    label: 'General' },
+];
 
 export default function Register() {
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    role: 'student',
-    studentId: '',
-    department: 'GENERAL',
+    name: '', email: '', password: '', confirmPassword: '',
+    role: 'student', studentId: '', department: 'GENERAL',
   });
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const set = (key, val) => setForm((f) => ({ ...f, [key]: val }));
+  const handleChange = (e) => set(e.target.name, e.target.value);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password !== form.confirmPassword) {
-      toast.error('Passwords do not match');
-      return;
-    }
-    if (form.password.length < 6) {
-      toast.error('Password must be at least 6 characters');
-      return;
-    }
+    if (form.password !== form.confirmPassword) { toast.error('Passwords do not match'); return; }
+    if (form.password.length < 6) { toast.error('Password must be at least 6 characters'); return; }
     setLoading(true);
     try {
-      await register({
-        name: form.name,
-        email: form.email,
-        password: form.password,
+      const u = await register({
+        name: form.name, email: form.email, password: form.password,
         role: form.role,
-        studentId: form.role === 'student' ? form.studentId : undefined,
-        department: form.role === 'staff' ? form.department : undefined,
+        studentId:  form.role === 'student' ? form.studentId  : undefined,
+        department: form.role === 'staff'   ? form.department : undefined,
       });
-      toast.success('Account created successfully');
-      navigate(form.role === 'student' ? '/dashboard' : '/admin');
+      toast.success('Account created!');
+      navigate(u.role === 'student' ? '/dashboard' : u.role === 'staff' ? '/staff' : '/admin');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed');
     } finally {
@@ -50,90 +50,92 @@ export default function Register() {
     }
   };
 
+  const inputCls = 'bg-surface-800 border-surface-700 text-white placeholder:text-surface-600 focus-visible:ring-primary-500';
+
   return (
     <div className="min-h-screen bg-surface-950 flex items-center justify-center p-4 py-10">
       <div className="w-full max-w-sm">
-        <div className="text-center mb-8">
+        <div className="text-center mb-7">
           <Link to="/" className="inline-flex items-center gap-2">
-            <div className="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-              </svg>
+            <div className="w-9 h-9 bg-brand-green rounded-xl flex items-center justify-center">
+              <Shield className="w-5 h-5 text-brand-dark" />
             </div>
-            <span className="font-semibold text-white">CampusConnect</span>
+            <span className="font-display font-bold text-white text-lg">ResolveX</span>
           </Link>
         </div>
 
-        <div className="bg-surface-900 border border-surface-800 rounded-2xl p-7">
-          <h2 className="text-lg font-semibold text-white mb-1">Create account</h2>
-          <p className="text-sm text-surface-500 mb-6">Join CampusConnect to get started</p>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-medium text-surface-400 mb-1.5">Full name</label>
-              <input type="text" name="name" value={form.name} onChange={handleChange} required
-                className="w-full px-3 py-2.5 bg-surface-800 border border-surface-700 rounded-lg text-sm text-white placeholder-surface-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                placeholder="Kartik Sharma" />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-surface-400 mb-1.5">Email address</label>
-              <input type="email" name="email" value={form.email} onChange={handleChange} required
-                className="w-full px-3 py-2.5 bg-surface-800 border border-surface-700 rounded-lg text-sm text-white placeholder-surface-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                placeholder="you@campus.edu" />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-surface-400 mb-1.5">Role</label>
-              <select name="role" value={form.role} onChange={handleChange}
-                className="w-full px-3 py-2.5 bg-surface-800 border border-surface-700 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all">
-                <option value="student">Student</option>
-                <option value="staff">Staff</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-            {form.role === 'student' && (
-              <div>
-                <label className="block text-xs font-medium text-surface-400 mb-1.5">Student ID <span className="text-surface-600">(optional)</span></label>
-                <input type="text" name="studentId" value={form.studentId} onChange={handleChange}
-                  className="w-full px-3 py-2.5 bg-surface-800 border border-surface-700 rounded-lg text-sm text-white placeholder-surface-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="STU001" />
+        <Card className="bg-surface-900 border-surface-800 shadow-modal">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-white text-lg">Create account</CardTitle>
+            <CardDescription className="text-surface-500">Join your campus on ResolveX</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-surface-400">Full name</label>
+                <Input name="name" value={form.name} onChange={handleChange} required placeholder="Priya Sharma" className={inputCls} />
               </div>
-            )}
-            {form.role === 'staff' && (
-              <div>
-                <label className="block text-xs font-medium text-surface-400 mb-1.5">Department</label>
-                <select name="department" value={form.department} onChange={handleChange}
-                  className="w-full px-3 py-2.5 bg-surface-800 border border-surface-700 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                  <option value="ELECTRICAL">Electrical</option>
-                  <option value="PLUMBING">Plumbing</option>
-                  <option value="HVAC">HVAC</option>
-                  <option value="IT_SUPPORT">IT Support</option>
-                  <option value="SECURITY">Security</option>
-                  <option value="GENERAL">General</option>
-                </select>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-surface-400">Email address</label>
+                <Input type="email" name="email" value={form.email} onChange={handleChange} required placeholder="you@campus.edu" className={inputCls} />
               </div>
-            )}
-            <div>
-              <label className="block text-xs font-medium text-surface-400 mb-1.5">Password</label>
-              <input type="password" name="password" value={form.password} onChange={handleChange} required minLength={6}
-                className="w-full px-3 py-2.5 bg-surface-800 border border-surface-700 rounded-lg text-sm text-white placeholder-surface-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                placeholder="••••••••" />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-surface-400 mb-1.5">Confirm password</label>
-              <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} required
-                className="w-full px-3 py-2.5 bg-surface-800 border border-surface-700 rounded-lg text-sm text-white placeholder-surface-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                placeholder="••••••••" />
-            </div>
-            <button type="submit" disabled={loading} className="w-full btn-primary py-2.5 mt-1 rounded-lg justify-center">
-              {loading ? 'Creating account...' : 'Create account →'}
-            </button>
-          </form>
 
-          <p className="mt-5 text-center text-xs text-surface-500">
-            Already have an account?{' '}
-            <Link to="/login" className="text-primary-400 hover:text-primary-300 font-medium">Sign in</Link>
-          </p>
-        </div>
+              {/* Role */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-surface-400">Role</label>
+                <Select value={form.role} onValueChange={(v) => set('role', v)}>
+                  <SelectTrigger className={inputCls}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="student">Student</SelectItem>
+                    <SelectItem value="staff">Staff</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {form.role === 'student' && (
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-surface-400">Student ID <span className="text-surface-600">(optional)</span></label>
+                  <Input name="studentId" value={form.studentId} onChange={handleChange} placeholder="STU001" className={inputCls} />
+                </div>
+              )}
+              {form.role === 'staff' && (
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-surface-400">Department</label>
+                  <Select value={form.department} onValueChange={(v) => set('department', v)}>
+                    <SelectTrigger className={inputCls}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {DEPARTMENTS.map((d) => (
+                        <SelectItem key={d.value} value={d.value}>{d.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-surface-400">Password</label>
+                <Input type="password" name="password" value={form.password} onChange={handleChange} required minLength={6} placeholder="••••••••" className={inputCls} />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-surface-400">Confirm password</label>
+                <Input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} required placeholder="••••••••" className={inputCls} />
+              </div>
+
+              <Button type="submit" disabled={loading} className="w-full bg-brand-green text-brand-dark hover:bg-brand-green/90 font-semibold">
+                {loading ? 'Creating account…' : 'Create account →'}
+              </Button>
+            </form>
+            <p className="mt-5 text-center text-xs text-surface-500">
+              Already have an account?{' '}
+              <Link to="/login" className="text-primary-400 hover:text-primary-300 font-medium">Sign in</Link>
+            </p>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

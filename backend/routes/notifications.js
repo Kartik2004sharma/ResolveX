@@ -29,6 +29,8 @@ router.get('/', protect, async (req, res) => {
           status: data.complaintId.status,
         };
       }
+      // Map isRead → read so NotificationBell works in API-poll fallback mode
+      data.read = data.isRead;
       delete data.complaintId;
       return data;
     });

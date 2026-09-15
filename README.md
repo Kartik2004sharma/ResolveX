@@ -25,11 +25,11 @@ A production-ready campus complaint and maintenance management system that allow
 
 ## 📊 Tech Stack
 
-- **Frontend**: React, Vite, Tailwind CSS, Recharts, React Router, Firebase SDK
-- **Backend**: Node.js 18+, Express.js, TypeScript-ready
-- **Database**: MySQL + Sequelize ORM
+- **Frontend**: React 18, Vite, Tailwind CSS, shadcn/ui, Recharts, React Router, Firebase SDK, Space Grotesk
+- **Backend**: Node.js 20+, Express.js
+- **Database**: **MongoDB** + **Mongoose ODM** (hosted on MongoDB Atlas)
 - **Auth**: JWT, bcrypt
-- **Cloud Services**: Cloudinary (image CDN), Firebase Firestore (real-time DB), Nodemailer (email)
+- **Cloud Services**: Cloudinary (image CDN), Firebase Firestore (real-time notifications), Nodemailer (email)
 - **Testing**: Jest, Supertest
 - **CI/CD**: GitHub Actions
 
@@ -68,21 +68,14 @@ campusconnect/
 
 ## 📋 Prerequisites
 
-- Node.js 18+ and npm
-- MySQL 5.7+ or MariaDB
-- Firebase account (free tier available)
-- Cloudinary account (free tier: 25GB/month)
+- Node.js 20+ and npm
+- **MongoDB Atlas** account (free tier available) — no local DB needed
+- Firebase account (free tier, optional — app works without it)
+- Cloudinary account (free tier: 25GB/month, optional for image uploads)
 
 ## 🚀 Quick Start
 
-### 1. Database Setup
-
-```bash
-mysql -u root -p
-CREATE DATABASE campusconnect CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-### 2. Backend Setup
+### 1. Backend Setup
 
 ```bash
 cd backend
@@ -90,6 +83,10 @@ npm install
 
 # Copy and configure environment
 cp .env.example .env
+# Edit .env — set MONGODB_URI, JWT_SECRET (see below)
+
+# Seed demo data
+npm run seed
 
 # Start development server
 npm run dev
@@ -97,20 +94,39 @@ npm run dev
 
 Backend runs on `http://localhost:5000`
 
-### 3. Frontend Setup
+**Minimum required `.env` variables:**
+```bash
+MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/campusconnect
+JWT_SECRET=your_random_secret_min_32_chars
+```
+
+### 2. Frontend Setup
 
 ```bash
-cd ../frontend
+cd frontend
 npm install
 
-# Copy and configure environment
-cp .env.example .env.local
+# Create frontend/.env.local
+cat > .env.local << 'EOF'
+VITE_API_URL=http://localhost:5000/api
+
+# Optional — Firebase real-time notifications
+# If omitted, NotificationBell falls back to API polling every 30s
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+EOF
 
 # Start development server
 npm run dev
 ```
 
-Frontend runs on `http://localhost:3000`
+Frontend runs on `http://localhost:5173`
+
+
 
 ### 4. Seed Database (Optional)
 

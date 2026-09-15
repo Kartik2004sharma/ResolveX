@@ -2,7 +2,7 @@ const { Notification } = require('../models');
 const { getFirestore, getAdmin } = require('../config/firebase');
 
 async function createNotification(userId, complaintId, type, title, message) {
-  // Save to MySQL
+  // Save to MongoDB
   const notification = await Notification.create({
     userId,
     complaintId,
