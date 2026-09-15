@@ -40,7 +40,7 @@ router.post(
       if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
       let { title, description, category, location, priority } = req.body;
-      const nlpResult = classifyComplaint(title, description);
+      const nlpResult = await classifyComplaint(title, description);
       if (!priority) priority = nlpResult.priority;
       category = category || nlpResult.category;
 
@@ -303,7 +303,7 @@ router.post(
     body('title').optional().trim(),
     body('description').optional().trim()
   ],
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
@@ -314,7 +314,8 @@ router.post(
       return res.status(400).json({ message: 'Title or description is required for classification' });
     }
 
-    res.json({ success: true, ...classifyComplaint(title, description) });
+    const result = await classifyComplaint(title, description);
+    res.json({ success: true, ...result });
   }
 );
 

@@ -115,7 +115,7 @@ function getComplaintSubmittedTemplate(complaintData) {
             </div>
 
             <p style="margin-top: 20px;">
-              <a href="${process.env.FRONTEND_URL}/complaint/${complaintData.complaintId}" class="button">Track Your Complaint</a>
+              <a href="${process.env.CLIENT_URL || process.env.FRONTEND_URL}/complaint/${complaintData.complaintId}" class="button">Track Your Complaint</a>
             </p>
 
             <p>You will receive email updates whenever there's a status change or assignment update.</p>
@@ -182,7 +182,7 @@ function getComplaintAssignedTemplate(complaintData, staffName) {
             </div>
 
             <p style="margin-top: 20px;">
-              <a href="${process.env.FRONTEND_URL}/admin/complaints/${complaintData.id}" class="button">View & Update Complaint</a>
+              <a href="${process.env.CLIENT_URL || process.env.FRONTEND_URL}/admin/complaints/${complaintData.id}" class="button">View & Update Complaint</a>
             </p>
           </div>
           <div class="footer">
@@ -243,7 +243,7 @@ function getComplaintResolvedTemplate(complaintData, staffName) {
             </p>
 
             <p style="margin-top: 20px;">
-              <a href="${process.env.FRONTEND_URL}/complaint/${complaintData.complaintId}" class="button">View Full Details</a>
+              <a href="${process.env.CLIENT_URL || process.env.FRONTEND_URL}/complaint/${complaintData.complaintId}" class="button">View Full Details</a>
             </p>
 
             <p>If you have any follow-up concerns, feel free to submit a new complaint.</p>
@@ -323,7 +323,7 @@ function getSlaBreachedTemplate(complaintData) {
             </div>
 
             <p style="margin-top: 20px;">
-              <a href="${process.env.FRONTEND_URL}/admin/complaints/${complaintData.id}" class="button">Take Action Now</a>
+              <a href="${process.env.CLIENT_URL || process.env.FRONTEND_URL}/admin/complaints/${complaintData.id}" class="button">Take Action Now</a>
             </p>
 
             <p>Immediate attention is required to resolve this complaint.</p>

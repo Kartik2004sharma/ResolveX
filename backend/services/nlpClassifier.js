@@ -1,74 +1,81 @@
-const natural = require('natural');
+const { OpenAI } = require('openai');
 
-// Category keywords for classification
-const CATEGORY_KEYWORDS = {
-  ELECTRICAL: ['light', 'power', 'electricity', 'fuse', 'switch', 'wiring', 'outlet', 'bulb', 'electrical', 'blackout'],
-  PLUMBING: ['water', 'leak', 'pipe', 'toilet', 'drain', 'plumbing', 'tap', 'flood', 'sewage', 'bathroom'],
-  HVAC: ['ac', 'heating', 'cooling', 'ventilation', 'air conditioner', 'temperature', 'fan', 'climate'],
-  INFRASTRUCTURE: ['building', 'ceiling', 'wall', 'floor', 'roof', 'structure', 'crack', 'damage', 'repair', 'rain'],
-  CLEANLINESS: ['clean', 'dirty', 'garbage', 'trash', 'hygiene', 'sanitation', 'mess', 'spill'],
-  SECURITY: ['security', 'theft', 'safety', 'lock', 'cctv', 'guard', 'intrusion', 'emergency'],
-  IT_SUPPORT: ['internet', 'wifi', 'computer', 'software', 'login', 'network', 'printer', 'it', 'system'],
-  LIBRARY: ['book', 'library', 'quiet', 'study', 'resource'],
-  CAFETERIA: ['food', 'cafeteria', 'canteen', 'mess', 'dining', 'meal'],
-  TRANSPORT: ['bus', 'transport', 'parking', 'vehicle', 'shuttle'],
-};
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
-// Priority keywords
-const PRIORITY_KEYWORDS = {
-  CRITICAL: ['emergency', 'urgent', 'immediate', 'danger', 'fire', 'flood', 'injury', 'critical', 'asap'],
-  HIGH: ['important', 'serious', 'broken', 'not working', 'urgent', 'quick'],
-  MEDIUM: ['issue', 'problem', 'need', 'please'],
-  LOW: ['minor', 'suggestion', 'when possible'],
-};
+const CATEGORIES = [
+  'ELECTRICAL', 'PLUMBING', 'HVAC', 'INFRASTRUCTURE', 
+  'CLEANLINESS', 'SECURITY', 'IT_SUPPORT', 'LIBRARY', 
+  'CAFETERIA', 'TRANSPORT', 'OTHER'
+];
 
-const tokenizer = new natural.WordTokenizer();
-
-function classifyCategory(text) {
-  const tokens = tokenizer.tokenize(text.toLowerCase());
-  const scores = {};
-
-  for (const [category, keywords] of Object.entries(CATEGORY_KEYWORDS)) {
-    scores[category] = keywords.reduce((score, keyword) => {
-      return score + (tokens.some((t) => t.includes(keyword)) ? 1 : 0);
-    }, 0);
-  }
-
-  const maxScore = Math.max(...Object.values(scores));
-  if (maxScore === 0) return 'OTHER';
-
-  return Object.entries(scores).find(([, s]) => s === maxScore)[0];
-}
-
-function classifyPriority(text) {
-  const combinedText = text.toLowerCase();
-  const tokens = tokenizer.tokenize(combinedText);
-
-  for (const [priority, keywords] of Object.entries(PRIORITY_KEYWORDS)) {
-    if (keywords.some((kw) => tokens.some((t) => t.includes(kw)) || combinedText.includes(kw))) {
-      return priority;
-    }
-  }
-
-  return 'MEDIUM';
-}
+const PRIORITIES = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'];
 
 function getPriorityScore(priority) {
   const scores = { CRITICAL: 1, HIGH: 0.75, MEDIUM: 0.5, LOW: 0.25 };
   return scores[priority] || 0.5;
 }
 
-function classifyComplaint(title, description) {
-  const text = `${title} ${description}`;
-  const category = classifyCategory(text);
-  const priority = classifyPriority(text);
-  const priorityScore = getPriorityScore(priority);
+async function classifyComplaint(title, description) {
+  // If no API key, fallback to a simple dummy logic (or throw an error)
+  if (!process.env.OPENAI_API_KEY) {
+    console.warn('OpenAI API key missing, falling back to OTHER/MEDIUM');
+    return { category: 'OTHER', priority: 'MEDIUM', priorityScore: 0.5 };
+  }
 
-  return {
-    category,
-    priority,
-    priorityScore,
-  };
+  try {
+    const text = `Title: ${title}\nDescription: ${description}`;
+    
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini", // fast, inexpensive model for classification
+      messages: [
+        {
+          role: "system",
+          content: `You are an AI trained to classify facility complaints for a campus management system. 
+You must analyze the Title and Description and output a JSON object with two fields:
+- "category": Must be one of exactly: ${CATEGORIES.join(', ')}
+- "priority": Must be one of exactly: ${PRIORITIES.join(', ')}
+
+Rules for priority:
+- CRITICAL: Life safety, severe hazards (fire, major flood), campus-wide outage.
+- HIGH: Blocking work, significant disruption, leaks, major broken items.
+- MEDIUM: Standard maintenance requests, AC issues, broken furniture.
+- LOW: Aesthetic issues, minor inconveniences, suggestions.
+
+Output ONLY valid JSON with no markdown formatting.`
+        },
+        {
+          role: "user",
+          content: text
+        }
+      ],
+      response_format: { type: "json_object" }
+    });
+
+    const result = JSON.parse(response.choices[0].message.content);
+    
+    const category = CATEGORIES.includes(result.category) ? result.category : 'OTHER';
+    const priority = PRIORITIES.includes(result.priority) ? result.priority : 'MEDIUM';
+    const priorityScore = getPriorityScore(priority);
+
+    return {
+      category,
+      priority,
+      priorityScore
+    };
+  } catch (error) {
+    console.error("OpenAI Classification Error:", error);
+    return {
+      category: 'OTHER',
+      priority: 'MEDIUM',
+      priorityScore: 0.5
+    };
+  }
 }
+
+// Stub these to prevent breaking older code or tests that import them
+const classifyCategory = async (text) => (await classifyComplaint(text, '')).category;
+const classifyPriority = async (text) => (await classifyComplaint(text, '')).priority;
 
 module.exports = { classifyComplaint, classifyCategory, classifyPriority };
