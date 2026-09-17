@@ -4,7 +4,9 @@ ResolveX is a full-stack campus complaint and maintenance management platform th
 
 ## 🎥 Product Demo
 
-https://github.com/user-attachments/assets/aed72fef-bc9b-45f2-b14e-7f3585b5d6eb
+
+https://github.com/user-attachments/assets/9f250191-5dd7-4787-be69-a4613c60ddd1
+
 
 ## ✨ What ResolveX Does
 
