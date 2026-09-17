@@ -104,7 +104,7 @@ Transition mood: crisp panel slide → Scene 4
 
 ### Scene 4 — Smart assignment — 4.2s
 
-Dark brand panel with a thin green routing line. The ticket card sits left; three destination chips assemble across the frame: `ELECTRICAL`, `Kritika · least-loaded`, `SLA: 4h remaining`. The section label `Smart Assignment` and source claim `right department, right staff member` land above the route. A subtle pulse travels along the connector.
+Dark brand panel with a live-looking routing engine summary in the upper right: `3 signals matched in 0.8s` — `department + workload + SLA`. A larger incoming-ticket card anchors the left side while a bright match signal travels along the green connector. Three destination chips then assemble across the frame: `ELECTRICAL`, `Kritika · least-loaded`, `SLA: 4h remaining`. The section label and source claim land above the route so the assignment feels active, legible, and operational.
 
 Sequential/interaction: yes — three destination chips arrive in order at approximately 10.54s, 11.60s, and 12.65s, each then remains visible.
 Audio intent: measured forward motion, one accent on the final assignment lock.
@@ -124,4 +124,3 @@ Transition mood: soft crossfade → end
 
 **Music mood for this video:** upbeat / app-store / dependable
 **Audio summary:** A warm business pulse carries one complaint through a clean UI workflow, with clicks and soft impacts marking the meaningful state changes before a restrained resolved/logo payoff.
-
