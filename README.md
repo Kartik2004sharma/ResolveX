@@ -1,335 +1,287 @@
-# CampusConnect - Where Every Concern Finds a Resolution
+# ResolveX — Where Every Concern Finds a Resolution
 
+ResolveX is a full-stack campus complaint and maintenance management platform that helps students report issues digitally, track their resolution in real time, and gives staff and administrators the tools to prioritize, assign, escalate, and resolve complaints efficiently.
 
+## 🎥 Product Demo
 
-A production-ready campus complaint and maintenance management system that allows students to submit complaints digitally, track resolution status in real-time, and enables administrators to manage, prioritize, and resolve issues efficiently.
+<video src="https://github.com/Kartik2004sharma/ResolveX/raw/refs/heads/main/brag-output/brag.mp4" controls width="100%"></video>
 
-## ✨ Features
+[▶️ Watch the ResolveX demo video](https://github.com/Kartik2004sharma/ResolveX/blob/main/brag-output/brag.mp4)
 
-### Core Functionality
-- **Role-based Authentication**: Student, Staff, Admin with JWT + bcrypt
-- **Complaint Submission**: Title, description, category, location, priority, optional image
-- **NLP Classification**: Auto-detect category and urgency using keyword-based NLP
-- **Smart Auto-Assignment**: Assign complaints to staff by department and workload
-- **SLA Escalation**: Auto-escalate complaints that exceed time limits
-- **Analytics Dashboard**: Trends, category/priority charts, department performance
+## ✨ What ResolveX Does
 
-### 🔧 New Enterprise Features
-- **Cloud Uploads**: Cloudinary CDN for image storage (no server disk needed)
-- **Email Notifications**: Nodemailer integration for real-time email alerts
-- **Real-time Notifications**: Firebase Firestore for instant notification sync (no polling!)
-- **Database Security**: SSL/TLS, sanitization, rate limiting, helmet security headers
-- **CI/CD Pipeline**: GitHub Actions for automated testing and deployment
-- **Comprehensive Testing**: Jest unit + integration tests with 80%+ coverage
-- **Production Ready**: Security hardening, error handling, monitoring
+- **Role-based authentication** for students, staff, and administrators using JWT + bcrypt
+- **Complaint submission** with title, description, category, location, priority, and optional image upload
+- **AI-assisted complaint classification** for category and urgency
+- **Smart auto-assignment** based on department and staff workload
+- **SLA escalation** for complaints that exceed configured resolution limits
+- **Analytics dashboard** for category, priority, trend, and department insights
+- **Real-time notifications** using Firebase Firestore
+- **Email notifications** using Nodemailer
+- **Cloud image uploads** through Cloudinary
+- **Security hardening** with Helmet, sanitization, rate limiting, validation, and encrypted passwords
+- **Automated testing and CI/CD** with Jest, Supertest, and GitHub Actions
 
-## 📊 Tech Stack
+## 🧠 AI / NLP
 
-- **Frontend**: React 18, Vite, Tailwind CSS, shadcn/ui, Recharts, React Router, Firebase SDK, Space Grotesk
-- **Backend**: Node.js 20+, Express.js
-- **Database**: **MongoDB** + **Mongoose ODM** (hosted on MongoDB Atlas)
-- **Auth**: JWT, bcrypt
-- **Cloud Services**: Cloudinary (image CDN), Firebase Firestore (real-time notifications), Nodemailer (email)
-- **Testing**: Jest, Supertest
-- **CI/CD**: GitHub Actions
+ResolveX includes an NLP classification service that can use the OpenAI SDK to help classify complaints by category and urgency. The backend also includes the `natural` package for text-processing workflows.
+
+## 🛠️ Tech Stack
+
+| Layer | Technologies |
+|---|---|
+| Frontend | React 18, Vite, Tailwind CSS, Radix UI, Recharts, React Router |
+| Backend | Node.js, Express.js |
+| Database | MongoDB, Mongoose |
+| Authentication | JWT, bcryptjs |
+| AI / NLP | OpenAI SDK, Natural |
+| Real-time | Firebase Firestore, Socket.IO |
+| Media | Cloudinary, Multer |
+| Email | Nodemailer |
+| Testing | Jest, Supertest, MongoDB Memory Server |
+| CI/CD | GitHub Actions |
 
 ## 🏗️ Project Structure
 
-```
-campusconnect/
-├── .github/workflows/          # GitHub Actions CI/CD
-│   ├── ci.yml                 # Test & build pipeline
-│   └── deploy.yml             # Deployment pipeline
+```text
+ResolveX/
+├── .github/workflows/          # CI/CD workflows
 ├── backend/
-│   ├── config/                # Database, Firebase, SLA config
-│   ├── models/                # User, Complaint, Notification
-│   ├── routes/                # API endpoints
-│   ├── middleware/            # Auth, sanitization, security
-│   ├── services/              # Email, NLP, notifications, auto-assignment
-│   ├── jobs/                  # SLA escalation cron job
-│   ├── __tests__/             # Jest test suites
-│   ├── .env.example           # Environment template
-│   └── server.js              # Express app
+│   ├── config/                 # Database, Firebase, SLA config
+│   ├── models/                 # Mongoose models
+│   ├── routes/                 # REST API endpoints
+│   ├── middleware/             # Auth, validation, security
+│   ├── services/               # NLP, email, notifications, assignment
+│   ├── jobs/                   # SLA escalation jobs
+│   ├── __tests__/              # Jest test suites
+│   └── server.js               # Express application
 ├── frontend/
 │   ├── src/
-│   │   ├── components/        # React components
-│   │   ├── config/            # Firebase config
-│   │   ├── context/           # Auth context
-│   │   ├── pages/             # Page components
-│   │   └── utils/             # API client
-│   ├── .env.example           # Environment template
+│   │   ├── components/
+│   │   ├── config/
+│   │   ├── context/
+│   │   ├── pages/
+│   │   └── utils/
 │   └── package.json
-├── DATABASE_SCHEMA.md         # Database design
-├── CICD_EXPLAINED.md         # CI/CD pipeline documentation
-├── FIREBASE_SETUP.md         # Firebase setup guide
-├── README.md                 # This file
+├── brag-output/                # Generated product demo assets
+├── DATABASE_SCHEMA.md
+├── CICD_EXPLAINED.md
+├── FIREBASE_SETUP.md
+├── README.md
 └── LICENSE
 ```
 
 ## 📋 Prerequisites
 
-- Node.js 20+ and npm
-- **MongoDB Atlas** account (free tier available) — no local DB needed
-- Firebase account (free tier, optional — app works without it)
-- Cloudinary account (free tier: 25GB/month, optional for image uploads)
+Before running ResolveX locally, install or configure:
+
+- Node.js 20+
+- npm
+- MongoDB Atlas or another MongoDB instance
+- Firebase project *(optional — used for real-time notifications)*
+- Cloudinary account *(optional — used for image uploads)*
+- Email provider credentials *(optional — used by Nodemailer)*
+- OpenAI API key *(optional — required for OpenAI-powered classification)*
 
 ## 🚀 Quick Start
 
-### 1. Backend Setup
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Kartik2004sharma/ResolveX.git
+cd ResolveX
+```
+
+### 2. Start the backend
 
 ```bash
 cd backend
 npm install
-
-# Copy and configure environment
 cp .env.example .env
-# Edit .env — set MONGODB_URI, JWT_SECRET (see below)
-
-# Seed demo data
 npm run seed
-
-# Start development server
 npm run dev
 ```
 
-Backend runs on `http://localhost:5000`
+The backend runs on:
 
-**Minimum required `.env` variables:**
-```bash
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/campusconnect
-JWT_SECRET=your_random_secret_min_32_chars
+```text
+http://localhost:5000
 ```
 
-### 2. Frontend Setup
+At minimum, configure:
+
+```env
+MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net/resolvex
+JWT_SECRET=replace_with_a_strong_random_secret
+```
+
+Optional integrations may require additional values such as `OPENAI_API_KEY`, Firebase credentials, Cloudinary credentials, and email configuration. See the included setup documentation for details.
+
+### 3. Start the frontend
+
+Open another terminal:
 
 ```bash
-cd frontend
+cd ResolveX/frontend
 npm install
+```
 
-# Create frontend/.env.local
-cat > .env.local << 'EOF'
+Create `frontend/.env.local`:
+
+```env
 VITE_API_URL=http://localhost:5000/api
 
-# Optional — Firebase real-time notifications
-# If omitted, NotificationBell falls back to API polling every 30s
+# Optional Firebase configuration
 VITE_FIREBASE_API_KEY=
 VITE_FIREBASE_AUTH_DOMAIN=
 VITE_FIREBASE_PROJECT_ID=
 VITE_FIREBASE_STORAGE_BUCKET=
 VITE_FIREBASE_MESSAGING_SENDER_ID=
 VITE_FIREBASE_APP_ID=
-EOF
+```
 
-# Start development server
+Then start Vite:
+
+```bash
 npm run dev
 ```
 
-Frontend runs on `http://localhost:5173`
+The frontend runs on:
 
+```text
+http://localhost:5173
+```
 
-
-### 4. Seed Database (Optional)
+### 4. Seed demo data *(optional)*
 
 ```bash
 cd backend
 npm run seed
 ```
 
-**Sample Credentials:**
-- Admin: `admin@campusconnect.edu` / `admin123`
-- Staff (Electrical): `Kritikarupesh1234@gmail.com` / `staff123`
-- Staff (Plumbing): `staff.plumbing@campusconnect.edu` / `staff123`
-- Student: `student@campusconnect.edu` / `student123`
+Sample credentials created by the seed script include:
 
-## 📚 Documentation
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@campusconnect.edu` | `admin123` |
+| Staff | `Kritikarupesh1234@gmail.com` | `staff123` |
+| Staff | `staff.plumbing@campusconnect.edu` | `staff123` |
+| Student | `student@campusconnect.edu` | `student123` |
 
-### Core Documentation
-- [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md) - Database design and structure
-- [backend/DATABASE_SECURITY.md](backend/DATABASE_SECURITY.md) - Security implementation
-- [backend/TESTING_GUIDE.md](backend/TESTING_GUIDE.md) - How to write and run tests
+> These credentials are for local/demo use only. Do not use them in production.
 
-### Integration Guides
-- [backend/NODEMAILER_SETUP.md](backend/NODEMAILER_SETUP.md) - Email configuration (Gmail, Outlook, Mailtrap)
-- [FIREBASE_SETUP.md](FIREBASE_SETUP.md) - Real-time notifications setup
-- [CICD_EXPLAINED.md](CICD_EXPLAINED.md) - GitHub Actions pipeline
+## 🔐 Security
+
+ResolveX includes multiple backend security controls:
+
+- JWT authentication with expiry
+- bcrypt password hashing
+- Helmet security headers
+- MongoDB query sanitization
+- Express input validation
+- Rate limiting
+- CORS configuration
+- Environment-based secret management
+- TLS support for hosted MongoDB connections
+
+See [`backend/DATABASE_SECURITY.md`](backend/DATABASE_SECURITY.md) for implementation details.
 
 ## 🧪 Testing
 
-### Run Tests
+Run the backend test suite:
 
 ```bash
 cd backend
-
-# Run all tests
 npm test
+```
 
-# Run in watch mode
+Other test commands:
+
+```bash
 npm run test:watch
-
-# Generate coverage report
 npm run test:coverage
 ```
 
-**Test Coverage:**
-- Unit tests for password hashing, JWT, NLP classifier
-- Integration tests for auth, complaints, auto-assignment
-- ~45+ test cases
+The test stack uses Jest, Supertest, and MongoDB Memory Server for isolated backend testing.
 
-## 🔐 Security Features
+See [`backend/TESTING_GUIDE.md`](backend/TESTING_GUIDE.md) for more information.
 
-✅ **Implemented:**
-- SSL/TLS database connections
-- Input sanitization (prevents injection attacks)
-- Rate limiting (100 req/15min general, 10 req/15min for auth)
-- Helmet.js security headers
-- bcrypt password hashing (12 rounds)
-- JWT authentication with expiry
-- CORS configured
-- Environment variable secrets management
+## 🔄 CI/CD
 
-See [backend/DATABASE_SECURITY.md](backend/DATABASE_SECURITY.md) for detailed security documentation.
+ResolveX uses GitHub Actions for automated integration and deployment workflows.
 
-## ☁️ Cloud Services
+The CI workflow can validate backend tests and frontend builds on pushes and pull requests, while deployment workflows can be configured for production environments.
 
-### Cloudinary (Image CDN)
-- ✅ **Replaces local file storage**
-- Automatic image optimization
-- Global CDN delivery
-- Free tier: 25GB storage + 25GB bandwidth/month
-- [Setup Instructions](backend/utils/upload.js)
+See [`CICD_EXPLAINED.md`](CICD_EXPLAINED.md) for the pipeline documentation.
 
-### Firebase Firestore (Real-time Notifications)
-- ✅ **Real-time notification sync** (no polling!)
-- Live unread badge updates
-- Automatic data synchronization
-- Free tier: 50,000 reads/day
-- [Setup Guide](FIREBASE_SETUP.md)
-
-### Nodemailer (Email Notifications)
-- ✅ **Email on key events**
-  - Complaint submitted
-  - Assigned to staff
-  - Resolved
-  - SLA breached
-- Gmail App Passwords, Outlook, or Mailtrap support
-- [Configuration Guide](backend/NODEMAILER_SETUP.md)
-
-## 🔄 CI/CD Pipeline
-
-GitHub Actions automation:
-
-**CI Pipeline (on every push/PR):**
-- ✅ Run backend tests (Jest)
-- ✅ Build frontend (Vite)
-- ✅ Lint code (ESLint)
-- ✅ Check security
-
-**Deploy Pipeline (on main branch):**
-- ✅ Build backend & frontend
-- ✅ Run smoke tests
-- ✅ Deploy to production
-
-[View pipeline details](CICD_EXPLAINED.md)
-
-## 📊 API Routes
+## 📊 API Overview
 
 | Method | Route | Description |
-|--------|-------|-------------|
-| POST | /api/auth/register | Register user |
-| POST | /api/auth/login | Login |
-| GET | /api/auth/me | Get current user |
-| GET | /api/complaints | List complaints (role-filtered) |
-| POST | /api/complaints | Submit complaint (image upload) |
-| GET | /api/complaints/:id | Get complaint details |
-| PATCH | /api/complaints/:id | Update status/assignment |
-| POST | /api/complaints/classify | NLP preview classification |
-| GET | /api/notifications | Get user notifications |
-| GET | /api/analytics/* | Dashboard analytics |
-| GET | /api/users/staff | List staff members |
+|---|---|---|
+| POST | `/api/auth/register` | Register a user |
+| POST | `/api/auth/login` | Authenticate a user |
+| GET | `/api/auth/me` | Get the current user |
+| GET | `/api/complaints` | List role-filtered complaints |
+| POST | `/api/complaints` | Submit a complaint |
+| GET | `/api/complaints/:id` | Get complaint details |
+| PATCH | `/api/complaints/:id` | Update complaint status or assignment |
+| POST | `/api/complaints/classify` | Classify complaint text |
+| GET | `/api/notifications` | Get user notifications |
+| GET | `/api/analytics/*` | Retrieve dashboard analytics |
+| GET | `/api/users/staff` | List staff members |
 
-## 🚀 Production Deployment
+## ☁️ Integrations
 
-### Prerequisites
+### Cloudinary
+Used for cloud-based complaint image uploads and delivery.
+
+### Firebase Firestore
+Used for real-time notification synchronization.
+
+### Nodemailer
+Used for email notifications such as complaint submission, assignment, resolution, and SLA events.
+
+### OpenAI
+Used by the NLP classification service when an API key is configured.
+
+## 📚 Documentation
+
+- [`DATABASE_SCHEMA.md`](DATABASE_SCHEMA.md) — database design
+- [`backend/DATABASE_SECURITY.md`](backend/DATABASE_SECURITY.md) — database and API security
+- [`backend/TESTING_GUIDE.md`](backend/TESTING_GUIDE.md) — testing guide
+- [`backend/NODEMAILER_SETUP.md`](backend/NODEMAILER_SETUP.md) — email setup
+- [`FIREBASE_SETUP.md`](FIREBASE_SETUP.md) — Firebase configuration
+- [`CICD_EXPLAINED.md`](CICD_EXPLAINED.md) — CI/CD documentation
+
+## 🚢 Production Checklist
+
+Before deploying ResolveX:
+
 - Set `NODE_ENV=production`
-- Use production MySQL database
-- Generate strong `JWT_SECRET` (use `openssl rand -base64 32`)
-- Configure email service (use campus SMTP or Gmail App Password)
-- Set up Firebase project for production
-- Update Firestore security rules
-
-### Deployment Options
-
-**Option 1: Render.com** (recommended for beginners)
-- Connect GitHub repo
-- Auto-deploys on push to main
-- $7/month for web service
-
-**Option 2: Railway.app**
-- GitHub integration
-- MySQL database included
-- $5/month starting price
-
-**Option 3: AWS/GCP/Azure**
-- More control
-- Complex setup
-- Use Docker for containerization
-
-See [CICD_EXPLAINED.md](CICD_EXPLAINED.md#deployment-strategies) for detailed deployment instructions.
-
-## 📈 Performance
-
-- **Page Load**: ~1.5s (optimized with Vite + compression)
-- **Real-time Notifications**: <100ms (Firebase Firestore)
-- **Database Queries**: <100ms (with indexes)
-- **Test Execution**: ~12s (full suite with Docker MySQL)
+- Use a production MongoDB database
+- Generate a strong `JWT_SECRET`
+- Configure production CORS origins
+- Configure email credentials if email notifications are enabled
+- Configure Firebase and Firestore security rules if real-time notifications are enabled
+- Configure Cloudinary if image uploads are enabled
+- Configure `OPENAI_API_KEY` if OpenAI classification is enabled
+- Store all secrets in your deployment platform's environment-variable manager
 
 ## 🤝 Contributing
 
-1. Create feature branch: `git checkout -b feature/new-feature`
-2. Make changes and test: `npm test`
-3. Commit with clear messages
-4. Push and create Pull Request
-5. Wait for CI to pass
-6. Merge after review
+1. Create a feature branch.
+2. Make and test your changes.
+3. Commit with a clear message.
+4. Push the branch.
+5. Open a pull request.
+6. Verify CI before merging.
 
 ## 📄 License
 
-MIT License - See LICENSE file for details
+This project is licensed under the MIT License. See [`LICENSE`](LICENSE) for details.
 
-## 🆘 Troubleshooting
+---
 
-### Backend won't start
-```bash
-# Check MySQL is running
-mysql -u root -p -e "SELECT 1"
-
-# Check port 5000 is available
-lsof -i :5000
-
-# Check .env is configured
-cat backend/.env
-```
-
-### Frontend shows "Cannot GET"
-```bash
-# Make sure backend is running
-curl http://localhost:5000/api/health
-
-# Check VITE_API_BASE_URL in .env.local
-cat frontend/.env.local
-```
-
-### Tests fail
-```bash
-# Install dependencies
-cd backend && npm ci
-
-# Make sure test database exists
-mysql -u root -p -e "CREATE DATABASE campusconnect_test"
-
-# Run with verbose output
-npm test -- --verbose
-```
-
-### Firebase notifications not working
-See [FIREBASE_SETUP.md](FIREBASE_SETUP.md#troubleshooting) for detailed troubleshooting
+<p align="center">
+  Built as <strong>ResolveX</strong> — a smarter way to report, route, and resolve campus issues.
+</p>
