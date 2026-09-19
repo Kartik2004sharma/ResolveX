@@ -304,7 +304,7 @@ export default function Landing() {
               <div key={step.num} className="relative">
                 {/* Connector line */}
                 {i < HOW_IT_WORKS.length - 1 && (
-                  <div className="hidden md:block absolute top-8 left-[calc(100%+12px)] w-[calc(100%-24px)] h-px bg-brand-green/30 z-0" />
+                  <div className="hidden md:block absolute top-7 left-7 w-[calc(100%+24px)] h-px bg-brand-green/30 z-0" />
                 )}
                 <div className="relative z-10">
                   <div className="w-14 h-14 rounded-brand bg-brand-green flex items-center justify-center font-display font-bold text-lg text-brand-dark mb-5">
