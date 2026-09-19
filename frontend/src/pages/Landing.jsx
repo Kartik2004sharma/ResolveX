@@ -240,7 +240,7 @@ export default function Landing() {
               <div className="h-px bg-brand-dark/10"/>
               <div className="flex items-center gap-2 text-xs text-brand-dark/50">
                 <div className="w-5 h-5 rounded-full bg-brand-green flex items-center justify-center text-brand-dark font-bold text-xs">K</div>
-                Assigned to Kritika · SLA: 4h remaining
+                Assigned to Kartik Sharma · SLA: 4h remaining
               </div>
               <div className="space-y-2">
                 {['PENDING', 'IN_PROGRESS'].map((s, i) => (

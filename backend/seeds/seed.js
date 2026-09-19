@@ -4,7 +4,7 @@ const { User, Complaint } = require('../models');
 
 const users = [
   { name: 'Admin User', email: process.env.ADMIN_EMAIL || 'admin@campusconnect.edu', password: 'admin123', role: 'admin', department: 'GENERAL' },
-  { name: 'Kritika', email: process.env.ELECTRICAL_STAFF_EMAIL || 'Kritikarupesh1234@gmail.com', password: 'staff123', role: 'staff', department: 'ELECTRICAL' },
+  { name: 'Kartik Sharma', email: process.env.ELECTRICAL_STAFF_EMAIL || 'Kritikarupesh1234@gmail.com', password: 'staff123', role: 'staff', department: 'ELECTRICAL' },
   { name: 'Nikhil', email: process.env.PLUMBING_STAFF_EMAIL || 'Nikhildhimam574@gmail.com', password: 'staff123', role: 'staff', department: 'PLUMBING' },
   { name: 'Alice Student', email: 'student@campusconnect.edu', password: 'student123', role: 'student', studentId: 'STU001' },
   { name: 'Bob Student', email: 'bob@campusconnect.edu', password: 'student123', role: 'student', studentId: 'STU002' },
@@ -81,7 +81,7 @@ async function seed() {
     console.log('Seed completed successfully!');
     console.log('\nSample credentials:');
     console.log('Admin: admin@campusconnect.edu / admin123');
-    console.log('Staff (Electrical): Kritikarupesh1234@gmail.com / staff123');
+    console.log('Staff (Electrical): Kartik Sharma (Kritikarupesh1234@gmail.com) / staff123');
     console.log('Staff (Plumbing): Nikhil / staff123 (email: Nikhildhimam574@gmail.com)');
     console.log('Student: student@campusconnect.edu / student123');
     process.exit(0);
